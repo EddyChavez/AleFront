@@ -1,0 +1,131 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Gestor de encuestas
+                <div class="card-header-actions">
+                    <small class="text-muted">Bienvenido Administrador</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-block btn-primary" data-toggle="modal"
+                                (click)="myModal.show(); limpiaModal()" style="margin-left: 500px">
+                            Crear sección
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <br>
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped table-bordered datatable dataTable no-footer"
+                               id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info"
+                               style="border-collapse: collapse !important">
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
+                                    rowspan="1" colspan="1" aria-sort="ascending"
+                                    aria-label="Username: activate to sort column descending">
+                                    <!--style="width: 111px;"-->
+                                    Encuesta
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1" aria-label="Date registered: activate to sort column ascending">
+                                    Número de Sección
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1" aria-label="Role: activate to sort column ascending">
+                                    Título de la Sección
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1" aria-label="Status: activate to sort column ascending">
+                                    Objetivo de la Sección
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1" aria-label="Status: activate to sort column ascending">
+                                    Instrucciones de la Sección
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1" aria-label="Status: activate to sort column ascending">
+                                    Acciones
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr role="row" class="odd" *ngFor="let seccion of secciones">
+                                <td class="sorting_1">
+                                    <span class="badge badge-success">{{encuesta.NOMBRE}}</span>
+                                </td>
+                                <td>{{seccion.NUMERO_SECCION}}</td>
+                                <td>{{seccion.NOMBRE_SECCION}}</td>
+                                <td>{{seccion.OBJETIVO}}</td>
+                                <td>{{seccion.INSTRUCCIONES}}</td>
+                                <td>
+                                    <a class="btn btn-success" (click)="myModal.show(); llenaModal(seccion.PK_SECCION)">
+                                        <i class="fa fa-search-plus"></i>
+                                    </a>
+                                    <a class="btn btn-info" (click)="myModal.show(); llenaModal(seccion.PK_SECCION)">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger" (click)="delete(seccion.PK_SECCION)">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Crear sección</h4>
+                <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="custom-radio">Escoge la encuesta </label>
+                <br>
+                <select class="form-control" id="select1" name="select1">
+                    <option>Por favor selecciona uno</option>
+                    <option *ngFor="let encuesta of encuestas">{{encuesta.NOMBRE}}</option>
+                </select>
+                <br>
+                <br>
+
+                <label for="NUMERO">Número: </label>
+                <input [(ngModel)]="seccion.NUMERO_SECCION" type="text" class="form-control"
+                       id="NUMERO" placeholder="Número de sección">
+
+                <label for="NOMBRE">Nombre: </label>
+                <input [(ngModel)]="seccion.NOMBRE_SECCION" type="text" class="form-control"
+                       id="NOMBRE" placeholder="Nombre de la sección">
+
+                <label for="OBJETIVO">Objetivo: </label>
+                <input [(ngModel)]="seccion.OBJETIVO" type="text" class="form-control"
+                       id="OBJETIVO" placeholder="Describe el objetivo de la sección">
+
+                <label for="INSTRUCCIONES">Instrucciones: </label>
+                <input [(ngModel)]="seccion.INSTRUCCIONES" type="text" class="form-control"
+                       id="INSTRUCCIONES" placeholder="Describe las instrucciones de la sección">
+                <!--<p>One fine body&hellip;</p>-->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="saveSeccion();myModal.hide()">Guardar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

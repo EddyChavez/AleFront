@@ -1,0 +1,881 @@
+<div class="row">
+    <div class="col-md-12">
+        <!--<div class="card text-white bg-info">-->
+        <div class="card">
+            <div class="card-header"><strong> Gestor de encuestas</strong>
+                <div class="card-header-actions">
+                    <div *ngIf="encuestaSelected == true">
+                        <button type="button"  class="btn btn-brand btn-twitter mr-1" style="margin-bottom: 4px" (click)="atras()">
+                            <i class="fa fa-arrow-circle-left"></i>
+                            <span>Regresar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div *ngIf="encuestaSelected == false; else elseBlock">
+                    <br>
+                    <br>
+                    <table class="table table-striped table-bordered datatable dataTable no-footer"
+                           id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info"
+                           style="border-collapse: collapse !important">
+
+                        <thead class="thead-light">
+                        <tr role="row">
+                            <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
+                                rowspan="1" colspan="1" aria-sort="ascending"
+                                aria-label="Username: activate to sort column descending">
+                                Título de la encuesta
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1" aria-label="Date registered: activate to sort column ascending">
+                                Objetivo de la encuesta
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1" aria-label="Role: activate to sort column ascending">
+                                Instrucciones de la encuesta
+                            </th>
+                            <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1" aria-label="Status: activate to sort column ascending">
+                                Acciones
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr role="row" class="odd" *ngFor="let encuesta of encuestas"
+                            (click)="llenaEncuesta(encuesta.PK_ENCUESTA)">
+                            <!--th>{{encuesta.PK_ENPK_CUESTA}}</th-->
+                            <td> <span class="badge badge-primary" >
+                                {{encuesta.NOMBRE}}</span>
+                            </td>
+                            <td>{{encuesta.OBJETIVO}}</td>
+                            <td>{{encuesta.INSTRUCCIONES}}</td>
+                            <!--
+                            <td><a class="btn btn-block btn-primary" data-toggle="modal" (click)="/myModal.show()/{{en}}" (change)="llenaModal($event)">Editar</a></td>
+                            -->
+                            <td>
+                                <!-- a class="btn btn-block btn-pill btn-primary boton" (click)="primaryModal.show()" (click)="abreEncuesta(encuesta.PK_ENCUESTA)//myModal.show(); //llenaModal(encuesta.PK_ENCUESTA)">
+                                    Editar
+                                </a -->
+                                <a class="btn btn-info" style="color: white;" (click) = "abreEncuesta(encuesta.PK_ENCUESTA)"> <!--data-toggle="modal" (click)="myModal.show();-->
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <a class="btn btn-danger" style="color: white;" (click)="deleteEncuesta(encuesta.PK_ENCUESTA)">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                    <div class="card-footer">
+                        <div class="row col-sm-12" style="display:inline-block">
+                            <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                    data-toggle="modal" (click)="myModalEncuesta.show(); limpiaEncuesta()" >
+                            <!--data-toggle="modal" (click)="myModalEncuesta.show(); limpiaEncuesta(); creaEncuesta(encuesta.PK_ENCUESTA)" > -->
+                                Crear encuesta
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <!-- ENCUESTA Y SECCION  -->
+                <ng-template #elseBlock>
+                    <div *ngIf="seccionSelected == false; else elseBlock">
+                        <div class="card">
+                            <div class="card-header">Datos de la encuesta</div>
+                            <div align="center" >
+
+                                <div class="input-group col-lg-10" style="align-content: center" style="margin: 1%">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Nombre de la encuesta:</span>
+                                    </div>
+                                    <input name="encuesta.NOMBRE" type="text" id="nombreEncuesta" class="form-control"
+                                           value="{{jsonEncuesta['encuesta']['NOMBRE']}}">
+                                    <!--<input type="text" id="nombreEncuesta" name="" class="form-control" value="{{jsonEncuesta['encuesta']['NOMBRE']}}">-->
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group col-lg-10" style="margin: 1%">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Objetivo:</span>
+                                    </div>
+                                    <input name="encuesta.OBJETIVO" type="text" id="objetivoEncuesta" class="form-control"
+                                            value="{{jsonEncuesta['encuesta']['OBJETIVO']}}">
+                                   <!-- <input type="text" id="objetivoEncuesta" name="" class="form-control" value="{{jsonEncuesta['encuesta']['OBJETIVO']}}">-->
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group col-lg-10" style="margin: 1%">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Instrucciones:</span>
+                                    </div>
+                                    <input name="encuesta.INSTRUCCIONES" type="text" id="instrucEncuesta" class="form-control"
+                                           value="{{jsonEncuesta['encuesta']['INSTRUCCIONES']}}">
+                                    <!--<input type="text" id="instrucEncuesta" name="" class="form-control" value="{{jsonEncuesta['encuesta']['INSTRUCCIONES']}}">-->
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="row col-sm-12" style="display:inline-block" >
+                                    <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                            (click) = "editarEncuesta(); atras()">
+                                        Guardar
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div *ngIf="jsonEncuesta != null; else elseBlock">
+                            {{primaryModal.hide()}}
+                            <table class="table table-striped table-bordered datatable dataTable no-footer"
+                                   id="DataTables_Table_1" role="grid" aria-describedby="DataTables_Table_1_info"
+                                   style="border-collapse: collapse !important">
+                                <thead class="thead-light">
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
+                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                        aria-label="Username: activate to sort column descending">
+                                        Número de sección
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1"
+                                        colspan="1" aria-label="Date registered: activate to sort column ascending">
+                                        Nombre de sección
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1"
+                                        colspan="1" aria-label="Role: activate to sort column ascending">
+                                        Instrucciones de la sección
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1"
+                                        colspan="1" aria-label="Status: activate to sort column ascending">
+                                        Objetivo de la sección
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1"
+                                        colspan="1" aria-label="Status: activate to sort column ascending">
+                                        Acciones
+                                </tr>
+                                </thead>
+                                <tbody>  <!--class="sorteable"-->
+                                <tr role="row" class="odd" *ngFor="let seccion of jsonEncuesta['encuesta']['SECCIONES']">
+                                   <!-- *ngIf="seccion.NUMERO_SECCION">-->
+                                  <!--  <div *ngIf="seccion.NUMERO_SECCION">-->
+                                    <td class="sorting_1">{{seccion.NUMERO_SECCION}}</td>
+                                    <td>
+                                        <span class="badge badge-info">
+                                            {{seccion.NOMBRE}}</span>
+                                    </td>
+                                    <td>{{seccion.INSTRUCCIONES}}</td>
+                                    <td>{{seccion.OBJETIVO}}</td>
+                                    <td>
+                                        <a class="btn btn-info"  style="color: white;" (click) = abreSeccion(seccion.PK_SECCION)> <!--data-toggle="modal" (click)="myModal.show();-->
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger" style="color: white;" (click)="deleteSeccion(seccion.PK_SECCION)">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </td>
+                                     <!--   </div>-->
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <!--    {{ makeSortable() }}-->
+                            <div class="card-footer">
+                            <!--<div class="row col-sm-12" style="float:right;">-->
+
+                                <div class="row col-sm-12" style="display:inline-block" >
+                                    <button type="button" style="float:right; width: unset;"
+                                            class="btn btn-pill btn-block btn-primary boton" data-toggle="modal"
+                                            (click)="myModalSeccion.show(); limpiaSeccion()">
+                                        Agregar sección
+                                    </button>
+                                </div>
+                           <!-- </div>-->
+
+                            </div>
+                        </div>
+
+                        <ng-template #elseBlock>
+                            <!--TODO loading-->
+                            {{primaryModal.show()}}
+                        </ng-template>
+                    </div>
+
+                    <!-- SECCION y PREGUNTA  -->
+                    <ng-template #elseBlock>
+                        <div *ngIf="preguntaSelected == false; else elseBlock">
+                            <div class="card">
+                                <div class="card-header ">Datos de la sección</div>
+                                <div align ="center">
+                                    <div class="input-group col-lg-10" style="margin: 1%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Número de sección:</span>
+                                        </div>
+                                        <input type="number" name="seccion.NUMERO_SECCION" class="form-control" disabled
+                                               id="numeroSeccion" value="{{getSeccion(seccionId).NUMERO_SECCION}}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-lg-10" style="align-content: center" style="margin: 1%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nombre de la sección:</span>
+                                        </div>
+                                        <input type="text" name="seccion.NOMBRE_SECCION" id="nombreSeccion"
+                                               class="form-control" value="{{getSeccion(seccionId).NOMBRE}}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-lg-10" style="margin: 1%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Objetivo:</span>
+                                        </div>
+                                        <input  type="text"  name="seccion.OBJETIVO" id="objetivoSeccion"
+                                               class="form-control" value="{{getSeccion(seccionId).OBJETIVO}}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="input-group col-lg-10" style="margin: 1%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Instrucciones:</span>
+                                        </div>
+                                        <input type="text" name="seccion.INSTRUCCIONES" class="form-control" id="instrucSeccion"
+                                               value="{{getSeccion(seccionId).INSTRUCCIONES}}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="card-footer">
+                                    <div class="row col-sm-12" style="display:inline-block" >
+                                        <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                                (click)="editarSeccion(); atras()">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <table class="table table-striped table-bordered datatable dataTable no-footer"
+                                   id="DataTables_Table_2" role="grid" aria-describedby="DataTables_Table_2_info"
+                                   style="border-collapse: collapse !important">
+                                <thead class="thead-light">
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_2"
+                                        rowspan="1" colspan="1" aria-sort="ascending"
+                                        aria-label="Username: activate to sort column descending">
+                                        Número de pregunta
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1"
+                                        colspan="1" aria-label="Date registered: activate to sort column ascending">
+                                        PLanteamiento de la pregunta
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1"
+                                        colspan="1" aria-label="Role: activate to sort column ascending">
+                                        Texto guía de la pregunta
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1"
+                                        colspan="1" aria-label="Role: activate to sort column ascending">
+                                        Tipo de pregunta
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_2" rowspan="1"
+                                        colspan="1" aria-label="Status: activate to sort column ascending">
+                                        Acciones
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr role="row" class="odd" *ngFor="let pregunta of getSeccion(seccionId).PREGUNTAS">
+                                    <td class="sorting_1">
+                                        {{pregunta.ORDEN}}</td>
+                                    <td><span class="badge badge-primary">
+                                        {{pregunta.PLANTEAMIENTO}}</span></td>
+                                    <td>{{pregunta.TEXTO_GUIA}}</td>
+                                    <td>{{pregunta.NOMBRE_TIPO_PREGUNTA}}</td>
+                                    <td>
+                                        <a class="btn btn-info" style="color: white;" (click) = abrePregunta(pregunta.PK_PREGUNTA)> <!--data-toggle="modal" (click)="myModal.show();-->
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger" style="color: white;" (click)="deletePregunta(pregunta.PK_PREGUNTA)">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="card-footer">
+                            <!--<div class="row col-sm-6" style="float:right;">-->
+                                <div class="row col-sm-12" style="display:inline-block">
+                                    <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                            data-toggle="modal" (click)="myModalTipoPregunta.show()">
+                                        Agregar pregunta
+                                    </button>
+                                </div>
+                            </div>
+                           <!-- </div>-->
+                        </div>
+                        <ng-template #elseBlock>
+                            {{primaryModal.show()}}
+                        </ng-template>
+
+
+
+                        <!-- PREGUNTA Y RESPUESTA -->
+                        <ng-template #elseBlock>
+                            <div *ngIf="respuestaSelected == false; else elseBlock">
+                                <div class="card">
+                                    <div class="card-header ">Datos de la pregunta</div>
+                                    <div align ="center">
+
+                                        <div class="input-group col-lg-10" style="align-content: center" style="margin: 1%">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Tipo de pregunta:</span>
+                                                </div>
+                                                <input type="text" name="pregunta.TIPO_PREGUNTA" id="tipoPregunta"
+                                                       class="form-control" value="{{getPregunta(preguntaId).NOMBRE_TIPO_PREGUNTA}}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"></span>
+                                                </div>
+                                            </div>
+
+                                        <div class="input-group col-lg-10" style="margin: 1%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Órden de la pregunta:</span>
+                                            </div>
+                                            <input type="number" name="pregunta.ORDEN" id="num"
+                                                   class="form-control" value="{{getPregunta(preguntaId).ORDEN}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group col-lg-10" style="margin: 1%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Planteamiento:</span>
+                                            </div>
+                                            <input type="text" name="pregunta.PLANTEAMIENTO" id="plantea"
+                                                   class="form-control" value="{{getPregunta(preguntaId).PLANTEAMIENTO}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="input-group col-lg-10" style="margin: 1%">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Texto guia:</span>
+                                            </div>
+                                            <input type="text" name="pregunta.TEXTO_GUIA" id="texto"
+                                                   class="form-control" value="{{getPregunta(preguntaId).TEXTO_GUIA}}">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <div class="row col-sm-12" style="display:inline-block" >
+                                            <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                                    (click)="editarPregunta(); atras()">
+                                                Guardar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                <table class="table table-striped table-bordered datatable dataTable no-footer"
+                                       id="DataTables_Table_3" role="grid" aria-describedby="DataTables_Table_0_info"
+                                       style="border-collapse: collapse !important">
+                                    <thead class="thead-light">
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0"
+                                            rowspan="1" colspan="1" aria-sort="ascending"
+                                            aria-label="Username: activate to sort column descending">
+                                            Respuesta Posible
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                            colspan="1" aria-label="Status: activate to sort column ascending">
+                                            Acciones
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr role="row" class="odd" *ngFor="let respuesta of getPregunta(preguntaId).RESPUESTAS">
+                                        <td>{{respuesta.RESPUESTA}}</td>
+                                        <td>
+                                            <a class="btn btn-info" (click) =abreRespuesta(respuesta.PK_RESPUESTA_POSIBLE)
+                                               style="color: white;"> <!--data-toggle="modal" (click)="myModal.show();-->
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger" (click)="deleteRespuesta(respuesta.PK_RESPUESTA_POSIBLE)"
+                                               style="color: white;">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                    </div>
+
+                                <div class="card-footer">
+                                    <div class="row col-sm-12" style="display:inline-block" >
+                                        <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                                data-toggle="modal" (click)="myModalRespuesta.show(); limpiaRespuesta()">
+                                            Agregar respuesta
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br>
+                            <br>
+
+                            <div>
+                                <div *ngIf="respt == true">
+                                    <div class="card">
+                                        <div class="card-header ">Datos de la respuesta</div>
+                                        <div align ="center">
+
+                                            <div class="input-group col-lg-10" style="margin: 1%">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Respuesta:</span>
+                                                </div>
+                                                <div>
+                                                    <input type="text" name="respuesta.RESPUESTA" id="resp" class="form-control"
+                                                       value="{{getRespuesta(respuestaId).RESPUESTA}}">
+                                                </div>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-footer">
+                                            <div class="row col-sm-12" style="display:inline-block" >
+                                                <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton"
+                                                        (click)="editarRespuesta()">
+                                                    Guardar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ng-template #elseBlock>
+                            </ng-template>
+
+                        </ng-template>
+
+                    </ng-template>
+                </ng-template>
+            </div>
+        </div>
+
+
+
+        <div bsModal #primaryModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog center modal-sm" role="document">
+                <div class="modal-body">
+                    <img id="destacada" class="center" src="assets/img/horizontal.png"/>
+                    <div class="modal-body spinner loader" style="margin-top:350%;"></div>
+                    <!-- img id="destacada" src="assets/img/loadingTecnm.gif"/-->
+                </div>
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal style="padding-top: 20%;"-->
+
+
+        <div bsModal #myModalEncuesta="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <!-- <div *ngIf="respuestaSelected == false; else elseBlock"></div>-->
+                <div class="modal-content modal-xl">
+                    <div class="modal-header col-sm-12">
+                        <h4 class="modal-title ">Creación de Encuesta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="NOMBRE">Nombre: </label>
+                        <input [(ngModel)]="encuesta.NOMBRE" type="text" class="form-control" id="NOMBRE"
+                               placeholder="Nombre de la encuesta">
+
+                        <label for="OBJETIVO">Objetivo: </label>
+                        <input [(ngModel)]="encuesta.OBJETIVO" type="text" class="form-control" id="OBJETIVO"
+                               placeholder="Describe el objetivo de la encuesta">
+
+                        <label for="INSTRUCCIONES">Instrucciones: </label>
+                        <input [(ngModel)]="encuesta.INSTRUCCIONES" type="text" class="form-control" id="INSTRUCCIONES"
+                               placeholder="Describe las instrucciones de la encuesta">
+
+                        <!--<p>One fine body&hellip;</p>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="myModalEncuesta.hide()">Cerrar</button>
+                        <button (click)="saveEncuesta(); myModalEncuesta.hide()" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div bsModal #myModalSeccion="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h4 class="modal-title col-sm-12">Crear sección</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="NUMERO">Número: </label>
+                        <input [(ngModel)]="seccion.NUMERO_SECCION" type="text" class="form-control"
+                               id="NUMERO" placeholder="Número de sección">
+
+                        <label for="NOMBRE">Nombre: </label>
+                        <input [(ngModel)]="seccion.NOMBRE_SECCION" type="text" class="form-control"
+                               id="NOMBRE_SEC" placeholder="Nombre de la sección">
+
+                        <label for="OBJETIVO">Objetivo: </label>
+                        <input [(ngModel)]="seccion.OBJETIVO" type="text" class="form-control"
+                               id="OBJETIVO_SEC" placeholder="Describe el objetivo de la sección">
+
+                        <label for="INSTRUCCIONES">Instrucciones: </label>
+                        <input [(ngModel)]="seccion.INSTRUCCIONES" type="text" class="form-control"
+                               id="INSTRUCCIONES_SEC" placeholder="Describe las instrucciones de la sección">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="myModalSeccion.hide()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="saveSeccion();myModalSeccion.hide()">Guardar</button>
+                    </div>
+                </div> <!-- /.modal-content -->
+            </div> <!-- /.modal-dialog -->
+        </div> <!-- /.modal -->
+
+        <div bsModal #myModalTipoPregunta="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog2" role="document">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header col-sm-12">
+                        <h4 class="modal-title">Añadir Pregunta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tipo de pregunta</p>
+                        <br>
+                        <button class="btn btn-light" id="type-button-1" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(0)">
+                            <img src="assets/img/preguntas/dicotomica.png" height="100px" width="100px" class="question-type-thumbnail">
+                        </button>
+                        <span>Dicotómica: Una respuesta</span>
+                        <br>
+
+                        <button class="btn btn-light" id="type-button-2" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(1)">
+                            <img src="assets/img/preguntas/unarespuesta.png" width="100px" class="question-type-thumbnail">
+                        </button>
+                        <span>Politomica: Una respuesta</span>
+                        <br>
+
+                        <button class="btn btn-light" id="type-button-3" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(2)">
+                            <img src="assets/img/preguntas/mixta.png"width="100px" class="question-type-thumbnail">
+                            <br>
+                        </button>
+                        <span>Mixta: Una respuesta</span>
+                        <br>
+
+                        <button class="btn btn-light" id="type-button-4" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(3)">
+                            <img src="assets/img/preguntas/rangonumerico.png" width="100px" class="question-type-thumbnail">
+                        </button>
+                        <span>Escala Numérica</span>
+                        <br>
+
+                        <button class="btn btn-light" id="type-button-5" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(4)">
+                            <img src="assets/img/preguntas/variasrespuestas.png" width="100px" class="question-type-thumbnail">
+                        </button>
+                        <span>Opcion Múltiple: Máx. 3 respuesta</span>
+                        <br>
+
+                        <button class="btn btn-light" id="type-button-6" (click)="myModalTipoPregunta.hide();
+                             myModalPregunta.show(); seleccionoPregunta(5)">
+                            <img src="assets/img/preguntas/abierta.png" width="100px" class="question-type-thumbnail" >
+                        </button>
+                        <span>Pregunta Abierta</span>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="myModalTipoPregunta.hide()">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div bsModal #myModalPregunta="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" style="overflow-y: auto"
+             role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" >
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h4 class="modal-title col-sm-12">Crear pregunta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-header">Formulación de pregunta
+                                <div class="card-header-actions">
+                                    <small class="text-muted">Bienvenido Administrador</small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="container-fluid">
+                                            <label for="TIPO_PREGUNTA">Tipo de pregunta: </label>
+                                            <input [(ngModel)]="pregunta.TIPO_PREGUNTA" type="text" class="form-control"
+                                                   disabled id="TIPO_PREGUNTA" >
+
+                                            <label for="ORDEN">Órden: </label>
+                                            <input [(ngModel)]="pregunta.ORDEN" type="text" class="form-control"
+                                                   id="ORDEN" placeholder="Escribe el número que le corresponde a la pregunta">
+
+                                            <label for="PLANTEAMIENTO">Planteamiento: </label>
+                                            <input [(ngModel)]="pregunta.PLANTEAMIENTO" type="text" class="form-control"
+                                                   id="PLANTEAMIENTO"  placeholder="Escribe el planteamiento de la pregunta">
+
+                                            <label for="GUIA">Texto guía: </label>
+                                            <input [(ngModel)]="pregunta.GUIA" type="text" class="form-control"
+                                                   id="GUIA" placeholder="Escribe el texto que guiará al usuario a contestar la pregunta">
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="myModalPregunta.hide()">Cerrar</button>
+                        <button (click)="savePregunta(); myModalPregunta.hide()" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <div bsModal #myModalRespuesta="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog2" role="document">
+                <div class="modal-content modal-xl">
+                    <div class="modal-header">
+                        <h4 class="modal-title col-sm-12">Crear Respuesta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label for="RESPUESTA">Respuesta: </label>
+                        <input [(ngModel)]="respuesta.RESPUESTA" type="text" class="form-control"
+                               id="RESPUESTA" placeholder="Escribe la respuesta posible">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="myModalRespuesta.hide()">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="saveRespuesta();myModalRespuesta.hide()">Guardar</button>
+                    </div>
+                </div> <!-- /.modal-content -->
+            </div> <!-- /.modal-dialog -->
+        </div> <!-- /.modal -->
+
+
+    </div>
+</div>
+
+
+<!--<div class="card">
+    <div class="card-header">Respuestas posibles
+        <div class="card-header-actions">
+            <small class="text-muted">Bienvenido Administrador</small>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="container-fluid">
+                    <div [ngSwitch]="tipo_pregunta">
+                        <div *ngSwitchCase="(0)">
+                            <input type="text" class="form-control" id="RESPUESTA1"
+                                   placeholder="Escribe la primera respuesta de tu pregunta">
+                            <br>
+                            <input type="text" class="form-control" id="RESPUESTA2"
+                                   placeholder="Escribe la segunda respuesta de tu pregunta">
+                            <br>
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Si</td>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngSwitchCase="(1)">
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Si</td>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngSwitchCase="(2)">
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Si</td>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngSwitchCase="(3)">
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    seleccionoPregunta(1)                <td>Si</td>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngSwitchCase="(4)">
+
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Si</td>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div *ngSwitchCase="(5)">
+                            <table class="table table-responsive-sm table-hover table-outline">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th colspan="4">Posibles respuestas</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Si</td>
+                                    <label for="NOMBRE">Nombre: </label>
+                                    <td>Hombre</td>
+                                    <td>Público</td>
+                                    <td>Aprobado</td>
+                                </tr>
+                                <tr>
+                                    <td>No</td>
+                                    <td>Mujer</td>
+                                    <td>Privado</td>
+                                    <td>No Aprobado</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngSwitchDefault></div>
+
+                    </div>
+                </div><br>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>-->
+

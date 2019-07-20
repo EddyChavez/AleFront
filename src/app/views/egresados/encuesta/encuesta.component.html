@@ -1,0 +1,160 @@
+<div class="row">
+    <div class="col-md-12">
+        <!--<div class="card text-white bg-info">-->
+        <div class="card">
+            <div class="card-header">Encuesta
+                <div class="card-header-actions">
+                    <small class="text-muted">Bienvenido Egresado</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div *ngIf="encuestaSelected == false; else elseBlock">
+                    <br>
+                    <br>
+                    <table class="table table-responsive-sm table-hover table-outline ">
+                        <thead class="thead-light">
+                        <tr>
+                            <!--th scope="col">Id dPK_e la Encuesta</th-->
+                            <th scope="col">Título de la Encuesta</th>
+                            <th scope="col">Objetivo de la Encuesta</th>
+                            <th scope="col">Instrucciones de la Encuesta</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let encuesta of encuestas" >
+                            <!--th>{{encuesta.PK_ENPK_CUESTA}}</th-->
+                            <td>{{encuesta.NOMBRE}}</td>
+                            <td>{{encuesta.OBJETIVO}}</td>
+                            <td>{{encuesta.INSTRUCCIONES}}</td>
+                            <td>
+                                <button type="button" style="float:right; width: unset;" class="btn btn-pill btn-block btn-primary boton" data-toggle="modal" (click)="myModal.show();"
+                                        (click)=" myModal.show(abreEncuesta(encuesta.PK_ENCUESTA))" >
+                                    Mostrar Encuesta
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                <!--    <div class="row col-sm-12" style="display:inline-block">
+
+                    </div>-->
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div bsModal #myModal="bs-modal" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div  class="modal-content modal-xl" >
+            <div class="modal-header">
+                <div *ngIf="encuestaSelected == true">
+                </div>
+                <h4 class="modal-title col-sm-12">
+                    <div class="input-group " style="align-content: center" style="margin: 1%">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Nombre de la encuesta:</span>
+                    </div>
+                    <input type="text" id=" " name="" class="form-control" value="{{this.encuesta['NOMBRE']}}">
+                    <div class="input-group-append">
+                        <span class="input-group-text"></span>
+                    </div>
+                </div>
+
+                    <div class="input-group col-lg-10" style="margin: 1%">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Objetivo:</span>
+                        </div>
+                        <input type="text" id="  " name="" class="form-control" value="{{this.encuesta['OBJETIVO']}}">
+                        <div class="input-group-append">
+                            <span class="input-group-text"></span>
+                        </div>
+                    </div>
+
+                    <div class="input-group col-lg-10" style="margin: 1%">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Instrucciones:</span>
+                        </div>
+                        <input type="text" id="" name="" class="form-control" value="{{this.encuesta['INSTRUCCIONES']}}">
+                        <div class="input-group-append">
+                            <span class="input-group-text"></span>
+                        </div>
+                    </div></h4>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header ; mostrarSecciones()">
+                        <div class="input-group " style="align-content: center" style="margin: 1%">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Nombre de la sección:</span>
+                            </div>
+                            <input type="email" id="" name="" class="form-control" value="{{getSeccion(seccionId).NOMBRE}}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"></span>
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-10" style="margin: 1%">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Objetivo:</span>
+                            </div>
+                            <input type="text" name="" class="form-control" value="{{getSeccion(seccionId).OBJETIVO}}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"></span>
+                            </div>
+                        </div>
+                        <div class="input-group col-lg-10" style="margin: 1%">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Instrucciones:</span>
+                            </div>
+                            <input type="text" name="" class="form-control" value="{{getSeccion(seccionId).INSTRUCCIONES}}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"></span>
+                            </div>
+                        </div>
+                        <div class="card-header-actions">
+                            <small class="text-muted">Bienvenido Egresado</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!--<div class="col-lg-12">
+                                <div *ngFor="let pregunta of jsonEncuesta['encuesta']['SECCIONES'][seccionId]['PREGUNTAS']">
+                                    <li>{{pregunta.ORDEN}}</li>
+                                    <li>{{pregunta.PLANTEAMIENTO}}</li>
+                                    <li>{{pregunta.TEXTO_GUIA}}</li>
+
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-toggle="modal">
+                    Siguiente
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
+

@@ -1,0 +1,355 @@
+<!--<router-outlet></router-outlet>-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Gestor de encuestas
+                <div class="card-header-actions">
+                    <small class="text-muted">Bienvenido Administrador</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-block btn-primary" data-toggle="modal" (click)="myModal.show()">
+                            Crear pregunta
+                        </button>
+                        <br>
+                    </div>
+                    <br><br><br>
+
+                </div>
+
+                <table class="table table-responsive-sm table-hover table-outline ">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Id de la Pregunta</th>
+                        <th scope="col">Tipo de pregunta</th>
+                        <th scope="col">Órden</th>
+                        <th scope="col">Planteamiento de la pregunta</th>
+                        <th scope="col">Texto guía</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let pregunta of preguntas">
+                        <th>{{pregunta.PK_PREGUNTA}}</th>
+                        <td>{{pregunta.TIPO_PREGUNTA}}</td>
+                        <td>{{pregunta.ORDEN}}</td>
+                        <td>{{pregunta.PLANTEAMIENTO}}</td>
+                        <td>{{pregunta.TEXTO_GUIA}}</td>
+                        <!--
+                        <td><a class="btn btn-block btn-primary" data-toggle="modal" (click)="/myModal.show()/{{en}}" (change)="llenaModal($event)">Editar</a></td>
+                        -->
+                        <td>
+                            <a class="btn btn-block btn-primary" data-toggle="modal" (click)="myModal.show(); llenaModal(encuesta.PK_PREGUNTA)">
+                                Editar
+                            </a>
+                            <a class="btn btn-block btn-primary btn-danger" data-toggle="modal" (click)="delete(encuesta.PK_PREGUNTA)">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir Pregunta</h4>
+                <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tipo de pregunta</p>
+                <br>
+
+                <div class="container-fluid">
+                    <button class="btn btn-light" id="type-button-1" (click)="myModal.hide(); seleccionoPregunta(0);
+                                    myModal2.show()">
+                        <img src="assets/img/preguntas/dicotomica.png" height="100px" width="100px"
+                             class="question-type-thumbnail" >
+                    </button>
+                    <span>Dicotómica: Una respuesta</span>
+                    <br>
+
+                    <button class="btn btn-light" id="type-button-2" (click)="myModal.hide(); seleccionoPregunta(1)">
+                        <img src="assets/img/preguntas/unarespuesta.png" width="100px"
+                             class="question-type-thumbnail" >
+                    </button>
+                    <span>Politomica: Una respuesta</span>
+                    <br>
+                    <button class="btn btn-light" id="type-button-3" (click)="myModal.hide(); seleccionoPregunta(2)">
+                        <img src="assets/img/preguntas/mixta.png"width="100px"
+                             class="question-type-thumbnail" > <br>
+                    </button>
+                    <span>Mixta: Una respuesta</span>
+                    <br>
+                    <button class="btn btn-light" id="type-button-4" (click)="myModal.hide(); seleccionoPregunta(3)">
+                        <img src="assets/img/preguntas/rangonumerico.png" width="100px"
+                             class="question-type-thumbnail" >
+                    </button>
+                    <span>Escala Numérica</span>
+                    <br>
+
+                    <button class="btn btn-light" id="type-button-5" (click)="myModal.hide(); seleccionoPregunta(4)">
+                        <img src="assets/img/preguntas/variasrespuestas.png" width="100px"
+                             class="question-type-thumbnail" >
+                    </button>
+                    <span>Opcion Múltiple: Máx. 3 respuesta</span>
+                    <br>
+
+                    <button class="btn btn-light" id="type-button-6" (click)="myModal.hide(); seleccionoPregunta(5)">
+                        <img src="assets/img/preguntas/abierta.png" width="100px"
+                             class="question-type-thumbnail" >
+                    </button>
+                    <span>Pregunta Abierta</span>
+                    <br>
+                    <!--<p>One fine body&hellip;</p>-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #myModal2="bs-modal" class="modal fade" tabindex="-1" style="overflow-y: auto " role="dialog" aria-labelledby="myModal2Label" aria-hidden="true">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Crear pregunta</h4>
+                <button type="button" class="close" (click)="myModal2.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">Formulación de pregunta
+                        <div class="card-header-actions">
+                            <small class="text-muted">Bienvenido Administrador</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="container-fluid">
+                                    <label for="ORDEN">Órden: </label>
+                                    <input type="text" class="form-control" id="ORDEN" placeholder="Escribe el número que le corresponde a la pregunta">
+
+                                    <label for="PLANTEAMIENTO">Planteamiento: </label>
+                                    <input type="text" class="form-control" id="PLANTEAMIENTO"  placeholder="Escribe la pregunta">
+
+                                    <label for="GUIA">Texto guía: </label>
+                                    <input type="text" class="form-control" id="GUIA" placeholder="Texto que guiará al usuario a contestar la pregunta">
+                                    <br>
+                                    <button type="button" class="btn btn-secondary" (click)="myModal2.hide()">Cerrar</button>
+                                    <button (click)="savePregunta()" class="btn btn-primary">Guardar</button>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div *ngIf="selecciono_pregunta==true" class="col-sm-12">-->
+                <div class="card">
+                    <div class="card-header">Respuestas posibles
+                        <div class="card-header-actions">
+                            <small class="text-muted">Bienvenido Administrador</small>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="container-fluid">
+                                    <div [ngSwitch]="selecciono_pregunta">
+                                        <div *ngSwitchCase="seleccionoPregunta(0)">
+                                            <input type="text" class="form-control" id="RESPUESTA1"
+                                                   placeholder="Escribe la primera respuesta de tu pregunta">
+                                            <br>
+                                            <input type="text" class="form-control" id="RESPUESTA2"
+                                                   placeholder="Escribe la segunda respuesta de tu pregunta">
+
+                                            <br>
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngSwitchCase="seleccionoPregunta(1)">
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngSwitchCase="seleccionoPregunta(2)">
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngSwitchCase="seleccionoPregunta(3)">
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngSwitchCase="seleccionoPregunta(4)">
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div *ngSwitchCase="seleccionoPregunta(5)">
+
+                                            <table class="table table-responsive-sm table-hover table-outline">
+                                                <thead class="thead-light">
+                                                <tr>
+                                                    <th colspan="4">Posibles respuestas</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Si</td>
+                                                    <td>Hombre</td>
+                                                    <td>Público</td>
+                                                    <td>Aprobado</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>No</td>
+                                                    <td>Mujer</td>
+                                                    <td>Privado</td>
+                                                    <td>No Aprobado</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!--<div *ngSwitchDefault></div>-->
+
+                                    </div>
+                                </div><br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- </div>-->
+                <!--<p>One fine body&hellip;</p>-->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="myModal2.hide()">Cerrar</button>
+                <button (click)="savePregunta();myModal2.hide()" class="btn btn-primary">Guardar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+

@@ -1,0 +1,71 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+
+.ng-invalid:not(form){
+    border-left: 5px solid red;
+}
+
+.ng-valid:not(form){
+    border-left: 5px solid green;
+}
+
+.boton{
+    cursor: pointer;
+}
+
+.loader {
+    margin: 0;
+    position: absolute;
+    top: 25%;
+    left: 19%;
+    margin: 0;
+    // loadingTecnm.gif
+}
+.spinner{
+    -webkit-animation: spin 2s linear infinite;
+}
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.loader {
+    border: 16px solid #ffffff;
+    border-radius: 50%;
+    border-top: 16px solid #002E6C;
+    width: 10%;
+    height: 10%;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 45%;
+    left: 49%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.btnRight{
+    float: right;
+    text-align: right;
+}

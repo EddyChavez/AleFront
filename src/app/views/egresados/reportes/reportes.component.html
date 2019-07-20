@@ -1,0 +1,54 @@
+<div class="container-fluid">
+    <div class="ui-view">
+        <div class="card">
+            <div class="card-header">Gestor de Aplicación de Encuesta
+                <div class="card-header-actions">
+                    <small class="text-muted">Bienvenido Administrador</small>
+                </div>
+            </div>
+            <div class="card-body">
+                    <div class="animated fadeIn">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">Usuarios
+                                        <div class="card-header-actions">
+                                            <small class="text-muted">Gestor de usuarios</small>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="checkbox-rounded">
+                                            <label class="checkbox-inline">Escoge los usuarios</label>
+                                            <br>
+                                            <input type="checkbox">
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">Encuestas
+                                        <div class="card-header-actions">
+                                            <small class="text-muted">Gestor de encuestas</small>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <label class="custom-radio">Escoge la encuesta </label>
+                                        <br>
+                                        <select class="form-control" id="select2" name="select2" size="">
+                                            <option>Por favor selecciona uno</option>
+                                            <option *ngFor="let encuesta of encuestas">{{encuesta.NOMBRE}}</option>
+                                        </select>
+                                        <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
